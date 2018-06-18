@@ -2,6 +2,7 @@
 
 # Começando com os imports
 import csv
+import statistics
 import matplotlib.pyplot as plt
 
 # Vamos ler os dados como uma lista
@@ -52,6 +53,16 @@ input("Aperte Enter para continuar...")
 # TAREFA 3
 # TODO: Crie uma função para adicionar as colunas(features) de uma lista em outra lista, na mesma ordem
 def column_to_list(data, index):
+    """
+      converte uma columna em lista, levando em cosideração o indice.
+      Argumentos:
+          param1: A tabela carregada apartir de um csv.
+          param2: o índice (zero based) da coluna a ser convertida.
+      Retorna:
+          uma list baseado na coluna informada pelo index.
+
+    """
+
     column_list = []
     key_list = list(data[0].keys())
     for s in data:
@@ -74,8 +85,8 @@ input("Aperte Enter para continuar...")
 # Agora sabemos como acessar as features, vamos contar quantos Male (Masculinos) e Female (Femininos) o dataset tem
 # TAREFA 4
 # TODO: Conte cada gênero. Você não deveria usar uma função parTODO isso.
-male = 0
-female = 0
+male = len(list(filter(lambda m: m["Gender"]=="Male", data_list)))
+female = len(list(filter(lambda m: m["Gender"]=="Female", data_list)))
 
 
 # Verificando o resultado
@@ -92,8 +103,18 @@ input("Aperte Enter para continuar...")
 # TODO: Crie uma função para contar os gêneros. Retorne uma lista.
 # Isso deveria retornar uma lista com [count_male, count_female] (exemplo: [10, 15] significa 10 Masculinos, 15 Femininos)
 def count_gender(data_list):
-    male = 0
-    female = 0
+    """
+      conta os generos encontrados em data list, assumindo que a coluna de genero seja 
+      identificada como Gender 
+      Argumentos:
+          param1: A tabela carregada apartir de um csv.
+      Retorna:
+          UMA LISTA com 2 itens sendo o primeiro o número de homens e o segundo de mulheres.
+
+    """
+
+    male = len(list(filter(lambda m: m["Gender"]=="Male", data_list)))
+    female = len(list(filter(lambda m: m["Gender"]=="Female", data_list)))
     return [male, female]
 
 
@@ -112,7 +133,20 @@ input("Aperte Enter para continuar...")
 # TODO: Crie uma função que pegue o gênero mais popular, e retorne este gênero como uma string.
 # Esperamos ver "Masculino", "Feminino", ou "Igual" como resposta.
 def most_popular_gender(data_list):
-    answer = ""
+    """
+      identifica, baseado no nro de amostras o genero mais popular 
+      Argumentos:
+          param1: A tabela carregada apartir de um csv.
+      Retorna: uma String que pode ser "Masculino", "Feminino", ou "Igual" de acordo com os valores computados.
+
+    """
+    answer = "Igual"
+    g = count_gender(data_list)
+    if g[0]>g[1]:
+        answer = "Masculino"
+    else:
+        answer = "Feminino"
+
     return answer
 
 
@@ -148,7 +182,7 @@ input("Aperte Enter para continuar...")
 male, female = count_gender(data_list)
 print("\nTAREFA 8: Por que a condição a seguir é Falsa?")
 print("male + female == len(data_list):", male + female == len(data_list))
-answer = "Escreva sua resposta aqui."
+answer = "Existem Registros onde Gender está vazio."
 print("resposta:", answer)
 
 # ------------ NÃO MUDE NENHUM CÓDIGO AQUI ------------
@@ -160,12 +194,15 @@ input("Aperte Enter para continuar...")
 # TAREFA 9
 # TODO: Ache a duração de viagem Mínima, Máxima, Média, e Mediana.
 # Você não deve usar funções prontas parTODO isso, como max() e min().
-trip_duration_list = column_to_list(data_list, 2)
-min_trip = 0.
-max_trip = 0.
-mean_trip = 0.
-median_trip = 0.
-
+trip_duration_list = sorted([float(x) for x in column_to_list(data_list, 2)])
+min_trip = trip_duration_list[0]
+max_trip = trip_duration_list[len(trip_duration_list)-1]
+mean_trip = sum(trip_duration_list) / float(len(trip_duration_list))
+quotient, remainder = divmod(len(trip_duration_list), 2)
+if remainder:
+    median_trip = trip_duration_list[quotient]
+else:
+    median_trip = sum(trip_duration_list[quotient - 1:quotient + 1]) / 2.
 
 print("\nTAREFA 9: Imprimindo o mínimo, máximo, média, e mediana")
 print("Min: ", min_trip, "Max: ", max_trip, "Média: ", mean_trip, "Mediana: ", median_trip)
@@ -181,7 +218,7 @@ input("Aperte Enter para continuar...")
 # TAREFA 10
 # Gênero é fácil porque nós temos apenas algumas opções. E quanto a start_stations? Quantas opções ele tem?
 # TODO: Verifique quantos tipos de start_stations nós temos, usando set()
-user_types = set()
+user_types = set(column_to_list(data_list, 4))
 
 print("\nTAREFA 10: Imprimindo as start stations:")
 print(len(user_types))
