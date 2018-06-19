@@ -2,8 +2,8 @@
 
 # Começando com os imports
 import csv
-import statistics
 import matplotlib.pyplot as plt
+from  functools import reduce
 
 # Vamos ler os dados como uma lista
 print("Lendo o documento...")
@@ -31,7 +31,7 @@ input("Aperte Enter para continuar...")
 print("\n\nTAREFA 1: Imprimindo as primeiras 20 amostras")
 
 # Vamos mudar o data_list para remover o cabeçalho dele.
-data_list = data_list[1:]
+#data_list = data_list[1:]
 for l in data_list[0:21]:
     print(l)
 # Nós podemos acessar as features pelo índice
@@ -196,13 +196,13 @@ input("Aperte Enter para continuar...")
 # Você não deve usar funções prontas parTODO isso, como max() e min().
 trip_duration_list = sorted([float(x) for x in column_to_list(data_list, 2)])
 min_trip = trip_duration_list[0]
-max_trip = trip_duration_list[len(trip_duration_list)-1]
-mean_trip = sum(trip_duration_list) / float(len(trip_duration_list))
-quotient, remainder = divmod(len(trip_duration_list), 2)
+max_trip = trip_duration_list[-1]
+mean_trip = reduce(lambda n,m: n+m, trip_duration_list) / float(len(trip_duration_list))
+quotient, remainder = (len(trip_duration_list) / 2, len(trip_duration_list) % 2)
 if remainder:
-    median_trip = trip_duration_list[quotient]
+    median_trip = trip_duration_list[int(quotient)]
 else:
-    median_trip = sum(trip_duration_list[quotient - 1:quotient + 1]) / 2.
+    median_trip = reduce(lambda n,m: n+m, trip_duration_list[int(quotient) - 1:int(quotient) + 1] )/2.
 
 print("\nTAREFA 9: Imprimindo o mínimo, máximo, média, e mediana")
 print("Min: ", min_trip, "Max: ", max_trip, "Média: ", mean_trip, "Mediana: ", median_trip)
@@ -218,7 +218,7 @@ input("Aperte Enter para continuar...")
 # TAREFA 10
 # Gênero é fácil porque nós temos apenas algumas opções. E quanto a start_stations? Quantas opções ele tem?
 # TODO: Verifique quantos tipos de start_stations nós temos, usando set()
-user_types = set(column_to_list(data_list, 4))
+user_types = set(column_to_list(data_list, 3))
 
 print("\nTAREFA 10: Imprimindo as start stations:")
 print(len(user_types))
