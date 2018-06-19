@@ -251,7 +251,7 @@ answer = "yes"
 
 def count_items(column_list):
     item_types = set(column_list)
-    count_items = [len(list(filter(lambda m: m==t,column_list))) for t in types]
+    count_items = [len(list(filter(lambda m: m==t,column_list))) for t in item_types]
     return item_types, count_items
 
 
