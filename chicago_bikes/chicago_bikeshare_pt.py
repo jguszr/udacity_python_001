@@ -32,8 +32,8 @@ print("\n\nTAREFA 1: Imprimindo as primeiras 20 amostras")
 
 # Vamos mudar o data_list para remover o cabeçalho dele.
 #data_list = data_list[1:]
-for l in data_list[0:21]:
-    print(l)
+[print(linha) for linha in data_list[:21]]
+    
 # Nós podemos acessar as features pelo índice
 # Por exemplo: sample[6] para imprimir gênero, ou sample[-2]
 
@@ -85,8 +85,18 @@ input("Aperte Enter para continuar...")
 # Agora sabemos como acessar as features, vamos contar quantos Male (Masculinos) e Female (Femininos) o dataset tem
 # TAREFA 4
 # TODO: Conte cada gênero. Você não deveria usar uma função parTODO isso.
-male = len(list(filter(lambda m: m["Gender"]=="Male", data_list)))
-female = len(list(filter(lambda m: m["Gender"]=="Female", data_list)))
+def column_value_count(column_index, value_to_be_compared,data):
+    response = 0
+
+    for registro in column_to_list(data,column_index):
+        if registro == value_to_be_compared:
+             response +=1
+
+    return response
+
+
+male = column_value_count(-2,"Male",data_list)
+female = column_value_count(-2,"Female",data_list)
 
 
 # Verificando o resultado
@@ -113,8 +123,8 @@ def count_gender(data_list):
 
     """
 
-    male = len(list(filter(lambda m: m["Gender"]=="Male", data_list)))
-    female = len(list(filter(lambda m: m["Gender"]=="Female", data_list)))
+    male = column_value_count(-2,"Male",data_list)
+    female = column_value_count(-2,"Female",data_list)
     return [male, female]
 
 
@@ -141,8 +151,9 @@ def most_popular_gender(data_list):
 
     """
     answer = "Igual"
-    g = count_gender(data_list)
-    if g[0]>g[1]:
+    gender_count = count_gender(data_list)
+
+    if gender_count[0]>gender_count[1]:
         answer = "Masculino"
     else:
         answer = "Feminino"
@@ -174,6 +185,16 @@ input("Aperte Enter para continuar...")
 # TAREFA 7
 # TODO: Crie um gráfico similar para user_types. Tenha certeza que a legenda está correta.
 print("\nTAREFA 7: Verifique o gráfico!")
+user_types_list = column_to_list(data_list, -3)
+types = list(set(user_types_list))
+quantity = [column_value_count(-3, user_type, data_list) for user_type in types]
+y_pos = list(range(len(types)))
+plt.bar(y_pos, quantity)
+plt.ylabel('Quantidade')
+plt.xlabel('Tipos de Usuário')
+plt.xticks(y_pos, types)
+plt.title('Número de usuários por tipo')
+plt.show(block=True)
 
 
 input("Aperte Enter para continuar...")
