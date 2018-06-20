@@ -86,6 +86,17 @@ input("Aperte Enter para continuar...")
 # TAREFA 4
 # TODO: Conte cada gênero. Você não deveria usar uma função parTODO isso.
 def column_value_count(column_index, value_to_be_compared,data):
+    """
+      função itera sobre a tabela informada, utilizando o índice informado (column_index) 
+      para selecionar uma coluna e contar os valores iguais ao paramentro value_to_be_compared
+      Argumentos:
+          param1: o índice (zero based) da coluna a ser convertida.
+          param2: o valor a ser empregado na comparação
+          param3: A tabela carregada apartir de um csv.
+      Retorna:
+          o numero de ocorrências iguais ao paramentro value_to_be_compared
+
+    """
     response = 0
 
     for registro in column_to_list(data,column_index):
@@ -271,6 +282,15 @@ print("Você vai encarar o desafio? (yes ou no)")
 answer = "yes"
 
 def count_items(column_list):
+    """
+      Conta tipos de dados apartir da list informada
+      Argumentos:
+          param1: a lista base 
+      Retorna:
+          tuple com os tipos de itens e o nro de ocorrências do mesmo.
+
+    """
+
     item_types = set(column_list)
     count_items = [len(list(filter(lambda m: m==t,column_list))) for t in item_types]
     return item_types, count_items
